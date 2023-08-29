@@ -84,3 +84,7 @@ leap_binder.set_metadata(function=metadata_sample_index, name='sample_index')
 leap_binder.set_metadata(function=metadata_dict, name='metadata')
 leap_binder.set_visualizer(horizontal_bar_visualizer_with_labels_name, 'horizontal_bar_lm', LeapDataType.HorizontalBar)
 leap_binder.add_prediction(name='classes', labels=CONFIG['LABELS_NAMES'])
+
+if __name__ == '__main__':
+    leap_binder.check()
+

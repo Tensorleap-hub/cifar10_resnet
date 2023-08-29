@@ -134,13 +134,13 @@ files = [
 
 [[package]]
 name = "code-loader"
-version = "0.2.91"
+version = "0.2.92"
 description = ""
 optional = false
 python-versions = ">=3.8,<3.11"
 files = [
-    {file = "code_loader-0.2.91-py3-none-any.whl", hash = "sha256:df626ee46f319601748db9802b579b6fc18dddd7b6d04a8264fb343f647aad02"},
-    {file = "code_loader-0.2.91.tar.gz", hash = "sha256:2a10d1f17fa504e86dd0f0140bedc2c0db87894d64301782878a7fed96237277"},
+    {file = "code_loader-0.2.92-py3-none-any.whl", hash = "sha256:ea654366a70b11c6e9f0ad9403cccdd7da389f8a9608b8bc013fd3c03ef3707b"},
+    {file = "code_loader-0.2.92.tar.gz", hash = "sha256:960312b09bb554515e63101bd61e6c508fa2e56675045f390f1ef9c8cb29a080"},
 ]
 
 [package.dependencies]
