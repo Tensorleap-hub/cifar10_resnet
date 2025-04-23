@@ -71,6 +71,7 @@ def metadata_dict(idx: int, preprocess: PreprocessResponse) -> Dict[str, Union[f
 
 
 def horizontal_bar_visualizer_with_labels_name(data: npt.NDArray[np.float32]) -> LeapHorizontalBar:
+    data = np.squeeze(data)
     labels_names = [CONFIG['LABELS_NAMES'][index] for index in range(data.shape[-1])]
     return LeapHorizontalBar(data, labels_names)
 
