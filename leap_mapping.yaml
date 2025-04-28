@@ -45,15 +45,18 @@ decorators:
         - inputKey: ground_truth
           operation: Metric
           id: '121'
-        - inputKey: data
-          operation: Visualizer
-          id: '119'
         - inputKey: ground_truth
           operation: CategoricalCrossentropy
           id: '117'
+        - inputKey: data
+          operation: Visualizer
+          id: '119'
   - operation: CategoricalCrossentropy
     data:
       type: Loss
+      arg_names:
+        - prediction
+        - ground_truth
     id: '117'
     inputs:
       prediction:
@@ -65,22 +68,6 @@ decorators:
         - outputKey: classes
           operation: GroundTruth
           id: '116'
-    outputs:
-      loss:
-        - inputKey: '0'
-          operation: Adam
-          id: '118'
-  - operation: Adam
-    data:
-      type: Optimizer
-      custom_input_keys:
-        - 118-0
-    id: '118'
-    inputs:
-      '0':
-        - outputKey: loss
-          operation: CategoricalCrossentropy
-          id: '117'
     outputs: {}
   - operation: Visualizer
     data:
