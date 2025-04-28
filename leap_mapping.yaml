@@ -45,12 +45,12 @@ decorators:
         - inputKey: ground_truth
           operation: Metric
           id: '121'
-        - inputKey: data
-          operation: Visualizer
-          id: '119'
         - inputKey: ground_truth
           operation: CategoricalCrossentropy
           id: '117'
+        - inputKey: data
+          operation: Visualizer
+          id: '119'
   - operation: CategoricalCrossentropy
     data:
       type: Loss
@@ -81,10 +81,6 @@ decorators:
     id: '119'
     inputs:
       data:
-        - outputKey: feature_map
-          operation: Permute
-          name: permute_45
-          id: '1'
         - outputKey: classes
           operation: GroundTruth
           id: '116'
