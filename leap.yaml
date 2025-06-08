@@ -1,6 +1,6 @@
-codeIntegrationId: 64a6c08c10f2eb001aff5ea7
+codeIntegrationId: ""
 projectId: ""
-secretManagerId: ""
+secretId: ""
 entryFile: leap_binder.py
 include:
     - leap_binder.py
@@ -9,5 +9,4 @@ include:
     - cifar10_resnet/encoders.py
     - cifar10_resnet/project_config.yaml
     - cifar10_resnet/utils.py
-
-
+pythonVersion: py39
