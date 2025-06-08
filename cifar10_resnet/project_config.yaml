@@ -9,3 +9,4 @@ LABELS_NAMES:
   - horse
   - ship
   - truck
+RUN_PATH: "/Users/amitcohen/tensorleap/data/benchmarking/labeling/runs/cifar10_resnet18/offline_train/2025-06-05_17-33-26"

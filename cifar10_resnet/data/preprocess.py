@@ -1,7 +1,9 @@
+import os
 import numpy as np
-from sklearn.model_selection import train_test_split
+from pathlib import Path
 from keras.datasets import cifar10
 from keras.utils import to_categorical
+from cifar10_resnet.config import CONFIG
 
 
 def preprocess_func():
@@ -13,12 +15,21 @@ def preprocess_func():
     train_Y (np.ndarray): Numpy array of shape (num_train_samples, num_classes) containing the one-hot encoded training labels.
     val_Y (np.ndarray): Numpy array of shape (num_val_samples, num_classes) containing the one-hot encoded validation labels.
     """
-    (data_X, data_Y), _ = cifar10.load_data()
+    (data_X, data_Y), (test_X, test_Y) = cifar10.load_data()
 
-    # data_X = data_X / 255
-    data_Y = np.squeeze(data_Y)  # Normalize to [0,1]
-    data_Y = to_categorical(data_Y)  # Hot Vector
+    data = np.load(Path(os.path.join(CONFIG["RUN_PATH"],'dataset_split.npz')).expanduser())
+    train_idxs = data["train_labeled_idxs"]
+    unlabeled_idxs = data["train_unlabeled_idxs"]
 
-    train_X, val_X, train_Y, val_Y = train_test_split(data_X, data_Y, test_size=0.2, random_state=42)
+    mean = np.array([0.4914, 0.4822, 0.4465])[None, None, None, :]
+    std = np.array([0.2470, 0.2435, 0.2616])[None, None, None, :]
 
-    return train_X, val_X, train_Y, val_Y
+    data_X = data_X / 255
+    data_X = (data_X - mean) / std
+    test_X = test_X / 255
+    test_X = (test_X - mean) / std
+
+    data_Y, test_Y = np.squeeze(data_Y), np.squeeze(test_Y)
+    data_Y, test_Y = to_categorical(data_Y), to_categorical(test_Y)  # Hot Vector
+
+    return data_X, data_Y, test_X, test_Y, train_idxs, unlabeled_idxs

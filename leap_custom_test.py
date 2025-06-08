@@ -1,15 +1,15 @@
 import os
-
-import tensorflow as tf
 import numpy as np
-from os.path import exists
-import urllib
+import tensorflow as tf
+from pathlib import Path
 from keras.losses import CategoricalCrossentropy
 
 from leap_binder import preprocess_func_leap, input_encoder_leap, gt_encoder, metadata_dict, metadata_sample_index, \
     unlabeled_data, horizontal_bar_visualizer_with_labels_name
 from leap_binder import leap_binder
 from code_loader.helpers import visualize
+from leap_binder import get_predicted_label, get_accuracy
+from cifar10_resnet.config import CONFIG
 
 
 def check_all_fuctions(responses, resnet, type):
@@ -17,6 +17,7 @@ def check_all_fuctions(responses, resnet, type):
     for i in range(0, 20):
         concat = np.expand_dims(input_encoder_leap(i, responses), axis=0)
         y_pred = resnet([concat])
+        pred_label = get_predicted_label(y_pred.numpy())
 
         sample_index = metadata_sample_index(i, responses)
         dict_metadata = metadata_dict(i, responses)
@@ -29,6 +30,7 @@ def check_all_fuctions(responses, resnet, type):
         if type != "unlabeled":
             gt = np.expand_dims(gt_encoder(i, responses), axis=0)
             y_true = tf.convert_to_tensor(gt)
+            acc = get_accuracy(y_pred.numpy(), y_true.numpy())
             ls = CategoricalCrossentropy()(y_true, y_pred).numpy()
 
             horizontal_bar_gt = horizontal_bar_visualizer_with_labels_name(y_true.numpy())
@@ -44,7 +46,7 @@ def check_custom_integration():
         leap_binder.check()
     print("started custom tests")
     dir_path = os.path.dirname(os.path.abspath(__file__))
-    model_path = ('model/resnet.h5')
+    model_path = (Path(os.path.join(CONFIG["RUN_PATH"],'resnet18.h5')).expanduser())
     resnet = tf.keras.models.load_model(os.path.join(dir_path, model_path))
 
     responses = preprocess_func_leap()
