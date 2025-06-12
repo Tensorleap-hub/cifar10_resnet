@@ -52,7 +52,7 @@ def get_predicted_label(pred: npt.NDArray[np.float32]) -> npt.NDArray[np.float32
 def get_accuracy(pred: npt.NDArray[np.float32], ground_truth: npt.NDArray[np.float32]) -> npt.NDArray[np.float32]:
     bs = pred.shape[0]
     pred =  F.log_softmax(torch.tensor(pred), dim=1).detach().numpy()
-    pred_index = pred.argmax()
+    pred_index = pred.argmax(axis=-1)
     target_index = ground_truth.argmax(axis=-1)
     acc = (target_index==pred_index).astype(float)
     return acc
