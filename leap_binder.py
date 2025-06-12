@@ -54,8 +54,8 @@ def get_accuracy(pred: npt.NDArray[np.float32], ground_truth: npt.NDArray[np.flo
     pred =  F.log_softmax(torch.tensor(pred), dim=1).detach().numpy()
     pred_index = pred.argmax()
     target_index = ground_truth.argmax(axis=-1)
-    acc = (target_index==pred_index).sum()
-    return acc.reshape(bs)
+    acc = (target_index==pred_index).astype(float)
+    return acc
 
 def metadata_sample_index(idx: int, preprocess: PreprocessResponse) -> int:
     return idx
