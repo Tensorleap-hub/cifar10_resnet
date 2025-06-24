@@ -30,7 +30,10 @@ def preprocess_func_leap() -> List[PreprocessResponse]:
 
 def unlabeled_data() -> PreprocessResponse:
     train_X, train_Y, test_X, test_Y, _, unlabeled_idxs = preprocess_func()
-    return PreprocessResponse(data={'images': train_X, 'subset_name': 'unlabeled'}, sample_ids=unlabeled_idxs.tolist(), sample_id_type=int)
+    if len(unlabeled_idxs) > 0:
+        return PreprocessResponse(data={'images': train_X, 'subset_name': 'unlabeled'}, sample_ids=unlabeled_idxs.tolist(), sample_id_type=int)
+    else:
+        return None
 
 # Input encoder fetches the image with the index `idx` from the `images` array set in
 # the PreprocessResponse data. Returns a numpy array containing the sample's image.
