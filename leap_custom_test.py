@@ -31,7 +31,7 @@ def check_all_fuctions(responses, resnet, type):
             gt = np.expand_dims(gt_encoder(i, responses), axis=0)
             y_true = tf.convert_to_tensor(gt)
             acc = get_accuracy(y_pred.numpy(), y_true.numpy())
-            ls = CategoricalCrossentropy()(y_true, y_pred).numpy()
+            ls = CategoricalCrossentropy(from_logits=True)(y_true, y_pred).numpy()
 
             horizontal_bar_gt = horizontal_bar_visualizer_with_labels_name(y_true.numpy())
 
