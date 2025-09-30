@@ -1,0 +1,90 @@
+decorators:
+  - operation: Input
+    data:
+      type: Input
+      output_name: image
+      batch_input_shape_origin:
+        - 1
+        - 224
+        - 224
+        - 3
+      origin_name: image
+    name: image
+    id: '105'
+    inputs: {}
+    outputs:
+      image:
+        - inputKey: input
+          operation: Permute
+          name: permute_44
+          id: '104'
+  - operation: GroundTruth
+    data:
+      type: GroundTruth
+      output_name: classes
+      selected: classes
+    id: '115'
+    inputs: {}
+    outputs:
+      classes:
+        - inputKey: y_pred
+          operation: CustomLoss
+          id: '116'
+        - inputKey: data
+          operation: Visualizer
+          id: '118'
+  - operation: CustomLoss
+    data:
+      type: CustomLoss
+      name: ce
+      selected: ce
+      user_unique_name: ce
+      arg_names:
+        - gt
+        - y_pred
+    id: '116'
+    inputs:
+      gt:
+        - outputKey: feature_map
+          operation: Permute
+          name: permute_45
+          id: '1'
+      y_pred:
+        - outputKey: classes
+          operation: GroundTruth
+          id: '115'
+    outputs: {}
+  - operation: Visualizer
+    data:
+      type: Visualizer
+      name: horizontal_bar_lm
+      visualizer_name: horizontal_bar_lm
+      visualizer_type: HorizontalBar
+      arg_names:
+        - data
+      user_unique_name: horizontal_bar_lm
+    id: '117'
+    inputs:
+      data:
+        - outputKey: feature_map
+          operation: Permute
+          name: permute_45
+          id: '1'
+    outputs: {}
+  - operation: Visualizer
+    data:
+      type: Visualizer
+      name: horizontal_bar_lm
+      visualizer_name: horizontal_bar_lm
+      visualizer_type: HorizontalBar
+      arg_names:
+        - data
+      user_unique_name: horizontal_bar_lm_1
+    id: '118'
+    inputs:
+      data:
+        - outputKey: classes
+          operation: GroundTruth
+          id: '115'
+    outputs: {}
+layers: []

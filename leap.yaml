@@ -1,7 +1,7 @@
 codeIntegrationId: 68da958cfb29594dfe644f7f
 projectId: 68da9589fb29594dfe644f79
 secretId: ""
-entryFile: leap_integration.py
+entryFile: leap_binder.py
 include:
     - leap_binder.py
     - requirements.txt
