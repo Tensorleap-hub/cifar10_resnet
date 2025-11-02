@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.8, <3.11"
-code-loader = "1.0.143.dev4"
+code-loader = "^1.0.145"
 code-loader-helpers = "^1.0.20"
 scikit-learn = "^1.3"
 
