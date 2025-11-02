@@ -1,19 +1,11 @@
 import os
-
 import tensorflow as tf
-import numpy as np
-from os.path import exists
-import urllib
-from keras.losses import CategoricalCrossentropy
-
 from leap_binder import (preprocess_func_leap, input_encoder_leap, gt_encoder, metadata_dict, metadata_sample_index
 , horizontal_bar_visualizer_with_labels_name, ce_loss)
-from leap_binder import leap_binder
 from code_loader.plot_functions.visualize import visualize
 from code_loader.contract.datasetclasses import PredictionTypeHandler
-from code_loader.inner_leap_binder.leapbinder_decorators import tensorleap_load_model, integration_test
+from code_loader.inner_leap_binder.leapbinder_decorators import tensorleap_load_model, tensorleap_integration_test
 from cifar10_resnet.config import CONFIG
-from code_loader.contract.enums import DataStateType
 
 prediction_type1 = PredictionTypeHandler('classes', CONFIG['LABELS_NAMES'])
 
@@ -24,7 +16,7 @@ def load_model():
     cnn = tf.keras.models.load_model(os.path.join(dir_path, model_path))
     return cnn
 
-@integration_test()
+@tensorleap_integration_test()
 def check_custom_intgeration(idx, subset):
     plot_vis = True
     inpt = input_encoder_leap(idx, subset)
@@ -38,7 +30,6 @@ def check_custom_intgeration(idx, subset):
     if plot_vis:
         visualize(horizontal_bar_pred, 'Prediction')
 
-    #if subset and subset.state != DataStateType.unlabeled:
     gt = gt_encoder(idx, subset)
     ls = ce_loss(gt, y_pred)
 
