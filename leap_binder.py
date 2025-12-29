@@ -44,7 +44,7 @@ def ce_loss(gt, y_pred):
 
 # Input encoder fetches the image with the index `idx` from the `images` array set in
 # the PreprocessResponse data. Returns a numpy array containing the sample's image.
-@tensorleap_input_encoder('image')
+@tensorleap_input_encoder('image',channel_dim=-1)
 def input_encoder_leap(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
     # return preprocess.data['images'][idx].astype('float32')
     image = preprocess.data['images'][idx].astype('float32')
