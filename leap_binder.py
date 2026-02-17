@@ -4,6 +4,7 @@ import numpy.typing as npt
 from code_loader.inner_leap_binder.leapbinder_decorators import tensorleap_preprocess,  \
     tensorleap_input_encoder, tensorleap_gt_encoder, tensorleap_metadata, tensorleap_custom_visualizer, \
     tensorleap_custom_loss
+from code_loader.visualizers.default_visualizers import default_image_visualizer
 from keras.datasets import cifar10
 
 # Tensorleap imports
@@ -23,6 +24,19 @@ from keras.losses import CategoricalCrossentropy
 @tensorleap_preprocess()
 def preprocess_func_leap() -> List[PreprocessResponse]:
     train_X, val_X, train_Y, val_Y =preprocess_func()
+
+    # Randomly corrupt 5% of labels by assigning a random different class
+    num_classes = train_Y.shape[1]
+    rng = np.random.default_rng(seed=42)
+    for labels in [train_Y, val_Y]:
+        n = len(labels)
+        num_corrupt = int(n * 0.05)
+        corrupt_indices = rng.choice(n, size=num_corrupt, replace=False)
+        original_classes = labels[corrupt_indices].argmax(axis=1)
+        random_offsets = rng.integers(1, num_classes, size=num_corrupt)
+        new_classes = (original_classes + random_offsets) % num_classes
+        labels[corrupt_indices] = 0
+        labels[corrupt_indices, new_classes] = 1
 
     # Generate a PreprocessResponse for each data slice, to later be read by the encoders.
     # The length of each data slice is provided, along with the data dictionary.
@@ -54,7 +68,7 @@ def input_encoder_leap(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
 # the PreprocessResponse's data. Returns a numpy array containing a hot vector label correlated with the sample.
 @tensorleap_gt_encoder('classes')
 def gt_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
-        return preprocess.data['labels'][idx].astype('float32')
+    return preprocess.data['labels'][idx].astype('float32')
 
 @tensorleap_metadata('sample_index')
 def metadata_sample_index(idx: int, preprocess: PreprocessResponse) -> int:
@@ -89,4 +103,18 @@ def horizontal_bar_visualizer_with_labels_name(data: npt.NDArray[np.float32]) ->
     data = np.squeeze(data)
     labels_names = [CONFIG['LABELS_NAMES'][index] for index in range(data.shape[-1])]
     return LeapHorizontalBar(data, labels_names)
+
+@tensorleap_custom_visualizer('default_image_visualizer', LeapDataType.Image)
+def image_visualizer(data: np.float32):
+    return default_image_visualizer(data)
+
+from code_loader import leap_binder
+
+
+leap_binder.leap_analysis_configuration.feature_flags = ['FEATURE_FLAG_MISLABELED_ON_ALL_CATEGORICAL_METADATA']
+
+
+
+
+
 
