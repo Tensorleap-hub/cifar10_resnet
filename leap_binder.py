@@ -1,12 +1,14 @@
 from typing import List, Dict, Union
 import numpy as np
 import numpy.typing as npt
+from code_loader.visualizers.default_visualizers import default_image_visualizer
 from code_loader.inner_leap_binder.leapbinder_decorators import tensorleap_preprocess,  \
     tensorleap_input_encoder, tensorleap_gt_encoder, tensorleap_metadata, tensorleap_custom_visualizer, \
     tensorleap_custom_loss
 from keras.datasets import cifar10
 
 # Tensorleap imports
+from code_loader import leap_binder
 from code_loader.contract.enums import LeapDataType
 from code_loader.contract.visualizer_classes import LeapHorizontalBar
 from code_loader.contract.datasetclasses import PreprocessResponse
@@ -90,3 +92,8 @@ def horizontal_bar_visualizer_with_labels_name(data: npt.NDArray[np.float32]) ->
     labels_names = [CONFIG['LABELS_NAMES'][index] for index in range(data.shape[-1])]
     return LeapHorizontalBar(data, labels_names)
 
+@tensorleap_custom_visualizer('image_visualizer', LeapDataType.Image)
+def image_visualizer(data: np.float32):
+    return default_image_visualizer(data)
+
+leap_binder.leap_analysis_configuration.feature_flags = ['FEATURE_FLAG_MISLABELED_ON_ALL_CATEGORICAL_METADATA']
