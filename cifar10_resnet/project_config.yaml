@@ -9,3 +9,13 @@ LABELS_NAMES:
   - horse
   - ship
   - truck
+
+# Directory on the Tensorleap data volume holding the cached CIFAR-10 npy files
+# (cifar10_x.npy / cifar10_y.npy). Read from a config-driven path — never hardcoded
+# in the integration logic. Overridable at runtime via the CIFAR10_DATA_DIR env var.
+DATA_VOLUME_DIR: /Users/yotamazriel/tensorleap/data/cifar10_resnet
+
+# Representative subset sizes for the evaluation (keeps the eval fast; the full
+# CIFAR-10 train split is 40000/10000 after the 80/20 split).
+SUBSET_TRAIN: 500
+SUBSET_VAL: 200

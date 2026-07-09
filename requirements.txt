@@ -1,5 +1,11 @@
+# Dependencies the Tensorleap platform installs with pip, additively on top of the
+# base image (which already provides code-loader — matching this repo's original
+# requirements, so it is intentionally not re-pinned here). Versions match the
+# local working environment. The platform builds on Linux, so tensorflow-macos is
+# guarded to darwin and plain tensorflow is used for the Linux build target.
 tensorflow==2.11.0; sys_platform != "darwin"
 tensorflow-macos==2.11.0; sys_platform == "darwin"
-scikit-learn==1.3.0
+scikit-learn==1.3.2
 numpy==1.24.4
-scipy==1.10.0
+scipy==1.10.1
+pyyaml==6.0.2
