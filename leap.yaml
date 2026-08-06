@@ -1,9 +1,11 @@
 codeIntegrationId: ""
 projectId: ""
 secretId: ""
-entryFile: leap_binder.py
+entryFile: leap_integration.py
 include:
+    - leap_integration.py
     - leap_binder.py
+    - requirements.txt
     - cifar10_resnet/data/preprocess.py
     - cifar10_resnet/config.py
     - cifar10_resnet/encoders.py
